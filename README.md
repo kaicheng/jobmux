@@ -1,7 +1,7 @@
 jobmux
 ======
 
-A lightweight job multiplexer.
+A lightweight job multiplexer written in Go.
 
 `jobmux` reads jobs from stdin, one job each line. It executes the jobs
 concurrently, while keeping stdout and stderr of the jobs sorted.
@@ -9,7 +9,7 @@ concurrently, while keeping stdout and stderr of the jobs sorted.
 ## Installation
 
 If you are new to Go, you need to setup your Go environment. Please follow the
-instructions in [http://golang.org/doc/install].
+instructions in http://golang.org/doc/install.
 
 After setting up Go and and its environment, installation of jobmux is pretty
 simple:
