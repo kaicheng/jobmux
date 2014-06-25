@@ -85,6 +85,7 @@ func main() {
 		shell = os.Getenv("SHELL")
 		if len(shell) == 0 {
 			fmt.Fprintln(os.Stderr, "No available shells.")
+			os.Exit(-1)
 		}
 	}
 	jobs = make(chan job)
