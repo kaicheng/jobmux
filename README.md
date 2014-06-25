@@ -30,6 +30,7 @@ job2 arga argb argc
 job3 argi argii argiii
 ```
 
+The command
 ```
 jobmux <input >stdout 2>stderr
 ```
