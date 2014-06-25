@@ -46,16 +46,28 @@ func worker() {
 }
 
 func inputReader(reader io.Reader) {
+	token := make(chan bool, 1)
+	token <- true
 	bufreader := bufio.NewReader(reader)
 	for line, err := bufreader.ReadBytes('\n'); err == nil; line, err = bufreader.ReadBytes('\n') {
 		stdout := make(chan []byte)
 		stderr := make(chan []byte)
 		jobs <- job{cmd: string(line), stdout: stdout, stderr: stderr}
-		stdouts <- stdout
-		stderrs <- stderr
+		prev := token
+		next := make(chan bool, 1)
+		go func() {
+			<-prev
+			stdouts <- stdout
+			stderrs <- stderr
+			next <- true
+		}()
+		token = next
 	}
-	close(stdouts)
-	close(stderrs)
+	go func() {
+		<-token
+		close(stdouts)
+		close(stderrs)
+	}()
 }
 
 func outputWriter(writer io.Writer, chans <-chan (<-chan []byte)) {
