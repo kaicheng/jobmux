@@ -58,7 +58,7 @@ func inputReader(reader io.Reader) {
 	close(stderrs)
 }
 
-func outputWriter(writer io.Writer, chans <-chan <-chan []byte) {
+func outputWriter(writer io.Writer, chans <-chan (<-chan []byte)) {
 	for c := range chans {
 		for data := range c {
 			writer.Write(data)
