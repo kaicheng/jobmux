@@ -69,7 +69,7 @@ func outputWriter(writer io.Writer, chans <-chan (<-chan []byte)) {
 
 func init() {
 	flag.IntVar(&numWorkers, "n", -1, "number of workers. -1 means the number of logical CPUs.")
-	flag.StringVar(&shell, "shell", "/bin/bash", "Absolute path to your shell.")
+	flag.StringVar(&shell, "shell", "", "Absolute path to your shell.")
 }
 
 func main() {
@@ -80,6 +80,12 @@ func main() {
 			os.Exit(-1)
 		}
 		numWorkers = runtime.NumCPU()
+	}
+	if len(shell) == 0 {
+		shell = os.Getenv("SHELL")
+		if len(shell) == 0 {
+			fmt.Fprintln(os.Stderr, "No available shells.")
+		}
 	}
 	jobs = make(chan job)
 	stdouts = make(chan (<-chan []byte))
