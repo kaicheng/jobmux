@@ -42,5 +42,11 @@ $(SHELL) <input >stdout 2>stderr
 jobmux only keep stdout and stdin sorted. If the jobs interference in
 environment variables, files, etc, the behavior is undefined.
 
+### Cautions
+
+jobmux caches all the outputs if previous jobs doesn't finish. The worst case
+is the first job finishes after all the other jobs, and jobmux caches all the
+outputs. Be prepared for that!
+
 ### Arguments
 Check `jobmux -h` for arguments.
