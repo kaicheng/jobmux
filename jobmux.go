@@ -38,10 +38,12 @@ func worker() {
 			Stderr: &stderr,
 		}
 		cmd.Run()
-		j.stdout <- stdout.Bytes()
-		j.stderr <- stderr.Bytes()
-		close(j.stdout)
-		close(j.stderr)
+		go func(j job) {
+			j.stdout <- stdout.Bytes()
+			j.stderr <- stderr.Bytes()
+			close(j.stdout)
+			close(j.stderr)
+		}(j)
 	}
 }
 
